@@ -1,7 +1,7 @@
 {
-  "name": "todo-list-redux",
+  "name": "react-hw35",
   "version": "0.1.0",
-  "homepage": "https://maksym-ryaboshapka.github.io/todo-list-redux/",
+  "homepage": "https://maksym-ryaboshapka.github.io/react-hw35/",
   "private": false,
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
