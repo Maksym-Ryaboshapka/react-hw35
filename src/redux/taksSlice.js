@@ -1,34 +1,36 @@
-import {createSlice} from "@reduxjs/toolkit";
-import {v4 as uuid} from "uuid";
-
-const initialState = [
-  { id: uuid(), text: "Task1", done: false },
-  { id: uuid(), text: "Task2", done: false },
-  { id: uuid(), text: "Task3", done: false },
-];
-
-
+import { createSlice } from "@reduxjs/toolkit";
+import { getTodos, addTodo, toggleTodo, removeTodo } from "./task/thunk";
 const tasksSlice = createSlice({
   name: "tasks",
-  initialState,
-  reducers: {
-    addTask: (state, action) => {
-      state.push(action.payload);
-    },
-    toggleTask: (state, action) => {
-      return [...state].map(task => {
-        if (task.id === action.payload) {
-          return action.payload;
-        } else {
-          return task;
-        }
-      });
-    },
-    removeTask: (state, action) => {
-      return [...state].filter(task => task.id !== action.payload);
-    }
+  initialState: {
+    items: [],
+    loading: false,
+    error: null
+  },
+  reducers: {},
+  extraReducers(builder) {
+    builder
+        .addCase(getTodos.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(getTodos.fulfilled, (state, action) => {
+          state.loading = false;
+          state.items = action.payload;
+        })
+
+        .addCase(addTodo.fulfilled, (state, action) => {
+          state.items.push(action.payload);
+        })
+
+        .addCase(toggleTodo.fulfilled, (state, action) => {
+          const idx = state.items.findIndex(t => t.id === action.payload.id);
+          if (idx !== -1) state.items[idx] = action.payload;
+        })
+
+        .addCase(removeTodo.fulfilled, (state, action) => {
+          state.items = state.items.filter(t => t.id !== action.payload);
+        });
   }
 });
 
-export const {addTask, toggleTask, removeTask} = tasksSlice.actions;
 export default tasksSlice.reducer;

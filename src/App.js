@@ -1,7 +1,5 @@
 import { useDispatch } from "react-redux";
-// import { addTask } from "./redux/task/action";
-import {addTask} from "./redux/taksSlice";
-import { v4 as uuid } from "uuid";
+import { addTodo } from "./redux/task/thunk";
 import TaskList from "./components/TaskList/TaskList";
 
 const App = () => {
@@ -12,13 +10,7 @@ const App = () => {
     const form = e.currentTarget;
     const taskText = form.elements.task.value;
 
-    const task = {
-      id: uuid(),
-      text: taskText,
-      done: false,
-    };
-
-    dispatch(addTask(task));
+    dispatch(addTodo(taskText));
 
     form.reset();
   };
